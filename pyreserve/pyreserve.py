@@ -13,10 +13,6 @@ import subprocess
 def generate_project(project_name):
     """
     Generates template files for a specific project (written by @jimfleming).
-
-    @param project_name:
-    @param install_dependencies:
-    @return:
     """
 
     project_config = {"project_name": project_name}
@@ -67,6 +63,8 @@ def generate_project(project_name):
 
     sys.stdout.write(' '.join(["Project created:", project_dir, '\n']))
 
+    return project_dir
+
 
 ## Main ##
 
@@ -76,9 +74,7 @@ def main():
         sys.stdout.write("Error: You need to include a project name")
         sys.exit(1)
     else:
-        generate_project(sys.argv[1])
+        project_dir = generate_project(sys.argv[1])
 
-        # BUG: These need to be run in the user's project directory, not PyReserve's directory
-        setup = subprocess.Popen(["python3", "setup.py", "sdist"], stdout=subprocess.PIPE)
-        subprocess.Popen(["twine", "register", "dist/*"])
-        subprocess.Popen(["twine", "upload", "dist/*"])
+        setup = subprocess.run("python3 " + project_dir + "/setup.py sdist", shell=True, stdout=subprocess.PIPE)
+        subprocess.run("twine upload " + project_dir + "/dist/*", shell=True)
