@@ -33,7 +33,7 @@ setup(
     include_package_data=True,
     packages=["pyreserve"],
     entry_points={"console_scripts": ["pyreserve = pyreserve.pyreserve:main"]},
-    install_requires=[],
+    install_requires=["pystache"],
     requires=[],
     python_requires=">=3",
     license="MIT"
